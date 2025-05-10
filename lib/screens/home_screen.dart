@@ -10,8 +10,11 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey,
       appBar: AppBar(
-        title: const Text('Invoice App Home'),
+        title: const Text('Advent Agency Invoice App Home'),
+        backgroundColor: Colors.pinkAccent,
+        foregroundColor: Colors.white,
       ),
       body: Center(
         child: Column(
