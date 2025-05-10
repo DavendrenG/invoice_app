@@ -23,11 +23,23 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFC2185B),
-      body: const Center(
-        child: Text(
-          'Advent Invoice App',
-          style: TextStyle(
-              color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Image(
+              image: AssetImage('images/splash_logo.png'),
+              width: 150,
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Advent Invoice App',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold),
+            ),
+          ],
         ),
       ),
     );
