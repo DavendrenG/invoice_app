@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:invoice_app/screens/splash_screen.dart';
 import 'models/invoice.dart';
 import 'models/invoice_item.dart';
 import 'screens/home_screen.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   // 🔴 Kill switch flag – change this and push with Shorebird
-  static const bool isAppDisabled = true; // Set to true in Shorebird patch
+  static const bool isAppDisabled = false; // Set to true in Shorebird patch
 
   // Optional message
   static const String killMessage =
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(primarySwatch: Colors.blue),
       home: isAppDisabled
           ? const DisabledAppScreen(message: killMessage)
-          : const HomeScreen(),
+          : const SplashScreen(),
     );
   }
 }
