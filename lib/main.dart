@@ -24,7 +24,7 @@ void main() async {
   final response = await http.get(Uri.parse(
       'https://raw.githubusercontent.com/DavendrenG/invoice_app/blob/master/config.json'));
 
-  bool isAppDisabled = true;
+  bool isAppDisabled = false;
   String disableMessage = "This app is currently unavailable.";
 
   if (response.statusCode == 200) {
