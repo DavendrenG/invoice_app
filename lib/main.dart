@@ -24,11 +24,11 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   // 🔴 Kill switch flag – change this and push with Shorebird
-  static const bool isAppDisabled = false; // Set to true in Shorebird patch
+  static const bool isAppDisabled = true; // Set to true in Shorebird patch
 
   // Optional message
   static const String killMessage =
-      "🚫 This version is blocked. Please update to continue.";
+      "🚫 This version is blocked!. Please contact verningpodcast@gmail.com to request access.";
 
   @override
   Widget build(BuildContext context) {
