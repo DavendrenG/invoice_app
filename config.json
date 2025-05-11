@@ -1,4 +1,4 @@
 {
-  "isAppDisabled": false,
-  "message": "This version of the app is no longer supported. Please contact the administrator."
+  "isAppDisabled": true,
+  "message": "This version is blocked. Update required."
 }
