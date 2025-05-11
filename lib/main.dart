@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:hive_flutter/hive_flutter.dart';
 import 'models/invoice.dart';
 import 'models/invoice_item.dart';
@@ -10,7 +8,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
 
-  // Register adapters
   if (!Hive.isAdapterRegistered(1)) {
     Hive.registerAdapter(InvoiceAdapter());
   }
@@ -20,28 +17,18 @@ void main() async {
 
   await Hive.openBox<Invoice>('invoices');
 
-  // 🔐 Remote kill switch check
-  final response = await http.get(Uri.parse(
-      'https://raw.githubusercontent.com/DavendrenG/invoice_app/blob/master/config.json'));
-
-  bool isAppDisabled = false;
-  String disableMessage = "This app is currently unavailable.";
-
-  if (response.statusCode == 200) {
-    final jsonData = jsonDecode(response.body);
-    isAppDisabled = jsonData['isAppDisabled'] ?? false;
-    disableMessage = jsonData['message'] ?? disableMessage;
-  }
-
-  runApp(MyApp(isAppDisabled: isAppDisabled, disableMessage: disableMessage));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final bool isAppDisabled;
-  final String disableMessage;
+  const MyApp({super.key});
 
-  const MyApp(
-      {super.key, required this.isAppDisabled, required this.disableMessage});
+  // 🔴 Kill switch flag – change this and push with Shorebird
+  static const bool isAppDisabled = false; // Set to true in Shorebird patch
+
+  // Optional message
+  static const String killMessage =
+      "🚫 This version is blocked. Please update to continue.";
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +36,7 @@ class MyApp extends StatelessWidget {
       title: 'Invoice App',
       theme: ThemeData(primarySwatch: Colors.blue),
       home: isAppDisabled
-          ? DisabledAppScreen(message: disableMessage)
+          ? const DisabledAppScreen(message: killMessage)
           : const HomeScreen(),
     );
   }
@@ -69,7 +56,10 @@ class DisabledAppScreen extends StatelessWidget {
           child: Text(
             message,
             style: const TextStyle(
-                color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
             textAlign: TextAlign.center,
           ),
         ),
