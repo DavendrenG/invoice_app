@@ -8,18 +8,52 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';
 import 'package:share_plus/share_plus.dart';
 import '../models/invoice.dart';
+import 'package:hive/hive.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class ViewInvoicesScreen extends StatelessWidget {
-  const ViewInvoicesScreen({super.key});
+class ViewInvoicesScreen extends StatefulWidget {
+  const ViewInvoicesScreen({Key? key}) : super(key: key);
+
+  @override
+  _ViewInvoicesScreenState createState() => _ViewInvoicesScreenState();
+}
+
+class _ViewInvoicesScreenState extends State<ViewInvoicesScreen> {
+  Box<Invoice>? userBox;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserBox();
+  }
+
+  Future<void> _loadUserBox() async {
+    const secureStorage = FlutterSecureStorage();
+    final email = await secureStorage.read(key: 'user_email');
+    final deviceId = await secureStorage.read(key: 'device_id');
+    final boxName = 'invoices_${email!}-$deviceId';
+
+    if (!Hive.isBoxOpen(boxName)) {
+      await Hive.openBox<Invoice>(boxName);
+    }
+
+    setState(() {
+      userBox = Hive.box<Invoice>(boxName);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final Box<Invoice> invoiceBox = Hive.box<Invoice>('invoices');
+    if (userBox == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(title: const Text('All Invoices')),
       body: ValueListenableBuilder(
-        valueListenable: invoiceBox.listenable(),
+        valueListenable: userBox!.listenable(),
         builder: (context, Box<Invoice> box, _) {
           if (box.isEmpty) {
             return const Center(child: Text('No invoices available.'));

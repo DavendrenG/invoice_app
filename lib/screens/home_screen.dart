@@ -13,7 +13,6 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: Colors.grey,
       appBar: AppBar(
         title: const Text('Advent Agency Invoice App Home'),
-        backgroundColor: Colors.pinkAccent,
         foregroundColor: Colors.white,
       ),
       body: Center(

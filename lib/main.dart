@@ -3,6 +3,9 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:invoice_app/screens/splash_screen.dart';
 import 'models/invoice.dart';
 import 'models/invoice_item.dart';
+import 'package:hive/hive.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 import 'screens/home_screen.dart';
 
 void main() async {
@@ -35,10 +38,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Invoice App',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: isAppDisabled
-          ? const DisabledAppScreen(message: killMessage)
-          : const SplashScreen(),
+      theme: ThemeData(
+        primarySwatch: Colors.indigo,
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.pinkAccent,
+          foregroundColor: Colors.white38,
+        ),
+      ),
+      home: const SplashScreen(), // or your home screen
     );
   }
 }
