@@ -115,80 +115,84 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Create Invoice')),
-      body: Form(
-        key: _formKey,
+      body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              TextFormField(
-                controller: _customerNameController,
-                decoration: const InputDecoration(labelText: 'Customer Name'),
-                validator: (value) => value!.isEmpty ? 'Required' : null,
-              ),
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(labelText: 'Email'),
-              ),
-              TextFormField(
-                controller: _phoneController,
-                decoration: const InputDecoration(labelText: 'Phone'),
-              ),
-              TextFormField(
-                controller: _addressController,
-                decoration: const InputDecoration(labelText: 'Address'),
-              ),
-              TextFormField(
-                controller: _invoiceNumberController,
-                decoration: const InputDecoration(labelText: 'Invoice Number'),
-                validator: (value) => value!.isEmpty ? 'Required' : null,
-              ),
-              TextFormField(
-                controller: _invoiceDateController,
-                decoration: const InputDecoration(
-                    labelText: 'Invoice Date (yyyy-mm-dd)'),
-              ),
-              TextFormField(
-                controller: _dueDateController,
-                decoration:
-                    const InputDecoration(labelText: 'Due Date (yyyy-mm-dd)'),
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: _addItem,
-                child: const Text('Add Item'),
-              ),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: items.length,
-                itemBuilder: (context, index) {
-                  final item = items[index];
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextFormField(
+                  controller: _customerNameController,
+                  decoration: const InputDecoration(labelText: 'Customer Name'),
+                  validator: (value) => value!.isEmpty ? 'Required' : null,
+                ),
+                TextFormField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(labelText: 'Email'),
+                ),
+                TextFormField(
+                  controller: _phoneController,
+                  decoration: const InputDecoration(labelText: 'Phone'),
+                ),
+                TextFormField(
+                  controller: _addressController,
+                  decoration: const InputDecoration(labelText: 'Address'),
+                ),
+                TextFormField(
+                  controller: _invoiceNumberController,
+                  decoration:
+                      const InputDecoration(labelText: 'Invoice Number'),
+                  validator: (value) => value!.isEmpty ? 'Required' : null,
+                ),
+                TextFormField(
+                  controller: _invoiceDateController,
+                  decoration: const InputDecoration(
+                      labelText: 'Invoice Date (yyyy-mm-dd)'),
+                ),
+                TextFormField(
+                  controller: _dueDateController,
+                  decoration:
+                      const InputDecoration(labelText: 'Due Date (yyyy-mm-dd)'),
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: _addItem,
+                  child: const Text('Add Item'),
+                ),
+                const SizedBox(height: 10),
+                ...items.asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final item = entry.value;
                   return ListTile(
                     title: Text(item.description),
                     subtitle: Text(
-                        'Qty: ${item.quantity}, Price: ${item.price.toStringAsFixed(2)}'),
+                      'Qty: ${item.quantity}, Price: ${item.price.toStringAsFixed(2)}',
+                    ),
                     trailing: IconButton(
                       icon: const Icon(Icons.delete),
                       onPressed: () => _removeItem(index),
                     ),
                   );
-                },
-              ),
-              TextFormField(
-                controller: _notesController,
-                decoration: const InputDecoration(labelText: 'Notes'),
-              ),
-              TextFormField(
-                controller: _termsController,
-                decoration: const InputDecoration(labelText: 'Terms'),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _saveInvoice,
-                child: const Text('Save Invoice'),
-              ),
-            ],
+                }).toList(),
+                TextFormField(
+                  controller: _notesController,
+                  decoration: const InputDecoration(labelText: 'Notes'),
+                ),
+                TextFormField(
+                  controller: _termsController,
+                  decoration: const InputDecoration(labelText: 'Terms'),
+                ),
+                const SizedBox(height: 20),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: _saveInvoice,
+                    child: const Text('Save Invoice'),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
